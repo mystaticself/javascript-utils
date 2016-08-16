@@ -215,6 +215,18 @@ export function objectWorldPositionToScreenAlt(object, camera)
         };
 }
 
+export function getWorldSize(camera)
+{
+    let topLeft = screenToWorld({x:0, y:0}, camera),
+        bottomRight = screenToWorld({x:window.innerWidth, y:window.innerHeight}, camera),
+        size = bottomRight.sub(topLeft);
+
+    size.x = Math.abs(size.x);
+    size.y = Math.abs(size.y);
+
+    return size;
+}
+
 export function worldToScreen(position, camera)
 {
     updateCameraMatrices(camera);
@@ -228,10 +240,6 @@ export function worldToScreen(position, camera)
         x:(vector.x * widthHalf) + widthHalf | 0,
         y:-(vector.y * heightHalf) + heightHalf | 0
     };
-
-    // vector.x = ( vector.x * widthHalf ) + widthHalf;
-    // vector.y = - ( vector.y * heightHalf ) + heightHalf;
-    // return vector;
 }
 
 export function screenToWorld(position, camera)
