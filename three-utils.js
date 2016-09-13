@@ -227,6 +227,13 @@ export function getWorldSize(camera)
     return size;
 }
 
+export function getObjectSize(object)
+{
+    const bBox = new THREE.Box3();
+    bBox.setFromObject(object);
+    return bBox.size();
+}
+
 export function worldToScreen(position, camera)
 {
     updateCameraMatrices(camera);
