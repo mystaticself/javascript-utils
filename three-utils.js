@@ -7,18 +7,15 @@ export const axisRight = new THREE.Vector3(1, 0, 0);
 export const axisForward = new THREE.Vector3(0, 0, 1);
 export const axisBackward = new THREE.Vector3(0, 0, -1);
 
-export function degreesToRads(degrees)
-{
+export function degreesToRads(degrees) {
     return degrees / 180 * Math.PI;
 }
 
-export function radsToDegrees(radians)
-{
+export function radsToDegrees(radians) {
     return radians * 180 / Math.PI;
 }
 
-export function getDataTexture(data, width, height, format)
-{
+export function getDataTexture(data, width, height, format) {
     let tex = new THREE.DataTexture(data, width, height, format, THREE.FloatType);
     tex.minFilter = THREE.NearestFilter;
     tex.magFilter = THREE.NearestFilter;
@@ -27,18 +24,15 @@ export function getDataTexture(data, width, height, format)
     return tex;
 }
 
-export function replaceThreeChunkFn(a, b)
-{
+export function replaceThreeChunkFn(a, b) {
     return THREE.ShaderChunk[b] + '\n';
 }
 
-export function shaderParse(glsl)
-{
+export function shaderParse(glsl) {
     return glsl.replace(/\/\/\s?chunk\(\s?(\w+)\s?\);/g, replaceThreeChunkFn);
 }
 
-export function debugTexture(texture, src)
-{
+export function debugTexture(texture, src) {
     let img = new Image();
     img.src = src ? src : texture.image.src;
 
@@ -51,13 +45,11 @@ export function debugTexture(texture, src)
     document.body.appendChild(container);
 }
 
-export function randomRange(min, max)
-{
+export function randomRange(min, max) {
     return min + Math.random() * (max - min);
 }
 
-export function rotateAroundWorldAxisX(object, radians)
-{
+export function rotateAroundWorldAxisX(object, radians) {
     let matrix = new THREE.Matrix4();
     matrix.makeRotationX(radians);
     matrix.multiply(object.matrix);
@@ -65,8 +57,7 @@ export function rotateAroundWorldAxisX(object, radians)
     object.rotation.setFromRotationMatrix(object.matrix);
 }
 
-export function rotateAroundWorldAxisY(object, radians)
-{
+export function rotateAroundWorldAxisY(object, radians) {
     let matrix = new THREE.Matrix4();
     matrix.makeRotationY(radians);
     matrix.multiply(object.matrix);
@@ -74,8 +65,7 @@ export function rotateAroundWorldAxisY(object, radians)
     object.rotation.setFromRotationMatrix(object.matrix);
 }
 
-export function rotateAroundWorldAxisZ(object, radians)
-{
+export function rotateAroundWorldAxisZ(object, radians) {
     let matrix = new THREE.Matrix4();
     matrix.makeRotationZ(radians);
     matrix.multiply(object.matrix);
@@ -83,8 +73,7 @@ export function rotateAroundWorldAxisZ(object, radians)
     object.rotation.setFromRotationMatrix(object.matrix);
 }
 
-export function rotateAroundWorldAxis(object, axis, radians)
-{
+export function rotateAroundWorldAxis(object, axis, radians) {
     let rotWorldMatrix = new THREE.Matrix4();
     rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
     rotWorldMatrix.multiply(object.matrix);
@@ -92,87 +81,73 @@ export function rotateAroundWorldAxis(object, axis, radians)
     object.rotation.setFromRotationMatrix(object.matrix);
 }
 
-export function setScale(object, scale)
-{
+export function setScale(object, scale) {
     object.scale.set(scale, scale, scale);
 }
 
-export function disposeOfMesh(mesh)
-{
-    if(!mesh) return;
+export function disposeOfMesh(mesh) {
+    if (!mesh) return;
 
-    if(mesh.parent) mesh.parent.remove(mesh);
-    if(mesh.geometry) mesh.geometry.dispose();
-    if(mesh.material)
-    {
-        if(mesh.material.map)
-        {
+    if (mesh.parent) mesh.parent.remove(mesh);
+    if (mesh.geometry) mesh.geometry.dispose();
+    if (mesh.material) {
+        if (mesh.material.map) {
             mesh.material.map.dispose();
         }
         mesh.material.dispose();
     }
 }
 
-export function disposeOfChildren(children)
-{
-    if(!children) return;
+export function disposeOfChildren(children) {
+    if (!children) return;
 
-    while(children.length > 0)
-    {
+    while (children.length > 0) {
         disposeOfMesh(children[0]);
     }
 }
 
-export function removeAllChildren(object3d)
-{
-    while(object3d.children.length > 0)
-    {
+export function removeAllChildren(object3d) {
+    while (object3d.children.length > 0) {
         object3d.remove(object3d.children[0]);
     }
 }
 
-export function moveTowards(object, position, easing)
-{
+export function moveTowards(object, position, easing) {
     object.position.x += (position.x - object.position.x) * easing;
     object.position.y += (position.y - object.position.y) * easing;
     object.position.z += (position.z - object.position.z) * easing;
 }
 
-export function moveVectorTowards(v1, v2, easing)
-{
+export function lerpVectorTowards(v1, v2, easing) {
     v1.x += (v2.x - v1.x) * easing;
     v1.y += (v2.y - v1.y) * easing;
     v1.z += (v2.z - v1.z) * easing;
 }
 
-export function rotateTowards(object, rotation, easing)
-{
+export function rotateTowards(object, rotation, easing) {
     object.rotation.x += (rotation.x - object.rotation.x) * easing;
     object.rotation.y += (rotation.y - object.rotation.y) * easing;
     object.rotation.z += (rotation.z - object.rotation.z) * easing;
 }
 
-export function updateCameraMatrices(camera)
-{
+export function updateCameraMatrices(camera) {
     camera.updateMatrix();
     camera.updateMatrixWorld();
     camera.matrixWorldInverse.getInverse(camera.matrixWorld);
 }
 
-export function meshIsInView(mesh, camera, frustum)
-{
+export function meshIsInView(mesh, camera, frustum) {
     frustum = frustum || new THREE.Frustum();
     updateCameraMatrices(camera);
 
     mesh.updateMatrix();
     mesh.updateMatrixWorld();
 
-    frustum.setFromMatrix( new THREE.Matrix4().multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse ) );
+    frustum.setFromMatrix(new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));
     return frustum.intersectsObject(mesh);
 }
 
-export function getMouseIntersection(mouse, camera, objects, raycaster)
-{
+export function getMouseIntersection(mouse, camera, objects, raycaster) {
     raycaster = raycaster || new THREE.Raycaster();
 
     raycaster.setFromCamera(mouse, camera);
@@ -180,45 +155,45 @@ export function getMouseIntersection(mouse, camera, objects, raycaster)
     return intersections.length > 0 ? intersections[0] : null;
 }
 
-export function objectWorldPositionToScreen(object, camera)
-{
+export function objectWorldPositionToScreen(object, camera) {
     updateCameraMatrices(camera);
     object.updateMatrixWorld();
 
-    let width = window.innerWidth, height = window.innerHeight,
-        widthHalf = width / 2, heightHalf = height / 2,
+    let width = window.innerWidth,
+        height = window.innerHeight,
+        widthHalf = width / 2,
+        heightHalf = height / 2,
         vector = new THREE.Vector3().setFromMatrixPosition(object.matrixWorld);
 
     vector.project(camera);
     return {
-        x:(vector.x * widthHalf) + widthHalf | 0,
-        y:-(vector.y * heightHalf) + heightHalf | 0
+        x: (vector.x * widthHalf + widthHalf) | 0,
+        y: (-(vector.y * heightHalf) + heightHalf) | 0
     };
 }
 
-export function objectWorldPositionToScreenAlt(object, camera)
-{
+export function objectWorldPositionToScreenAlt(object, camera) {
     updateCameraMatrices(camera);
     object.updateMatrixWorld();
 
-    let width = window.innerWidth, height = window.innerHeight,
+    let width = window.innerWidth,
+        height = window.innerHeight,
         pos = new THREE.Vector3().setFromMatrixPosition(object.matrixWorld),
         projScreenMat = new THREE.Matrix4();
 
-        projScreenMat.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
-        pos.applyMatrix4(projScreenMat);
-        // pos.applyProjection(projScreenMat);
+    projScreenMat.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+    pos.applyMatrix4(projScreenMat);
+    // pos.applyProjection(projScreenMat);
 
-        return {
-            x: ((pos.x + 1) * width / 2) | 0,
-            y: ((-pos.y + 1) * height / 2) | 0
-        };
+    return {
+        x: ((pos.x + 1) * width / 2) | 0,
+        y: ((-pos.y + 1) * height / 2) | 0
+    };
 }
 
-export function getWorldSize(camera)
-{
-    let topLeft = screenToWorld({x:0, y:0}, camera),
-        bottomRight = screenToWorld({x:window.innerWidth, y:window.innerHeight}, camera),
+export function getWorldSize(camera) {
+    let topLeft = screenToWorld({ x: 0, y: 0 }, camera),
+        bottomRight = screenToWorld({ x: window.innerWidth, y: window.innerHeight }, camera),
         size = bottomRight.sub(topLeft);
 
     size.x = Math.abs(size.x);
@@ -227,48 +202,46 @@ export function getWorldSize(camera)
     return size;
 }
 
-export function getObjectSize(object)
-{
+export function getObjectSize(object) {
     const bBox = new THREE.Box3();
     bBox.setFromObject(object);
     return bBox.size();
 }
 
-export function worldToScreen(position, camera)
-{
+export function worldToScreen(position, camera) {
     updateCameraMatrices(camera);
 
-    let width = window.innerWidth, height = window.innerHeight,
-        widthHalf = width / 2, heightHalf = height / 2,
+    let width = window.innerWidth,
+        height = window.innerHeight,
+        widthHalf = width / 2,
+        heightHalf = height / 2,
         vector = new THREE.Vector3().copy(position);
 
     vector.project(camera);
     return {
-        x:(vector.x * widthHalf) + widthHalf | 0,
-        y:-(vector.y * heightHalf) + heightHalf | 0
+        x: (vector.x * widthHalf + widthHalf) | 0,
+        y: (-(vector.y * heightHalf) + heightHalf) | 0
     };
 }
 
-export function screenToWorld(position, camera)
-{
+export function screenToWorld(position, camera) {
     updateCameraMatrices(camera);
 
-    let x = ( position.x / window.innerWidth ) * 2 - 1,
-        y = - ( position.y / window.innerHeight ) * 2 + 1,
+    let x = position.x / window.innerWidth * 2 - 1,
+        y = -(position.y / window.innerHeight) * 2 + 1,
         vector = new THREE.Vector3(x, y, 0.5);
 
     vector.unproject(camera);
 
-    let dir = vector.sub( camera.position ).normalize(),
-        distance = - camera.position.z / dir.z;
+    let dir = vector.sub(camera.position).normalize(),
+        distance = -camera.position.z / dir.z;
 
-    return camera.position.clone().add( dir.multiplyScalar( distance ) );
+    return camera.position.clone().add(dir.multiplyScalar(distance));
 }
 
-export function screenToWorldAtZ(position, z, camera)
-{
-    let x = ( position.x / window.innerWidth ) * 2 - 1,
-        y = - ( position.y / window.innerHeight ) * 2 + 1,
+export function screenToWorldAtZ(position, z, camera) {
+    let x = position.x / window.innerWidth * 2 - 1,
+        y = -(position.y / window.innerHeight) * 2 + 1,
         planeZ = new THREE.Plane(new THREE.Vector3(0, 0, 1), z),
         vector = new THREE.Vector3(x, y, 0.5),
         raycaster = new THREE.Raycaster(),
@@ -279,37 +252,34 @@ export function screenToWorldAtZ(position, z, camera)
     return pos;
 }
 
-export function getMouseWorldPos(mouseScreenPos, camera)
-{
+export function getMouseWorldPos(mouseScreenPos, camera) {
     let vec = mouseScreenPos.clone().unproject(camera);
-    let dir = vec.sub( camera.position ).normalize();
-    let distance = - camera.position.z / dir.z;
-    return camera.position.clone().add( dir.multiplyScalar( distance ) );
+    let dir = vec.sub(camera.position).normalize();
+    let distance = -camera.position.z / dir.z;
+    return camera.position.clone().add(dir.multiplyScalar(distance));
 }
 
-export function getMouseWorldPosAtZ(mouseScreenPos, camera, z)
-{
+export function getMouseWorldPosAtZ(mouseScreenPos, camera, z) {
     let planeZ = new THREE.Plane(new THREE.Vector3(0, 0, 1), z);
     let vec = mouseScreenPos;
     let raycaster = new THREE.Raycaster();
-    raycaster.pickingRay(vec, camera);
+    raycaster.setFromCamera(vec, camera);
     let pos = raycaster.ray.intersectPlane(planeZ);
     return pos;
 }
 
-export function getEdges(mesh)
-{
-    let edge = [ 0, 0 ],
-        hash = {}
-        keys = [ 'a', 'b', 'c' ],
-        geometry2,
-        thresholdDot = Math.cos( THREE.Math.degToRad( 1 ) );
+export function getEdges(mesh) {
+    let edge = [0, 0],
+        hash = {};
+    (keys = ['a', 'b', 'c']), geometry2, (thresholdDot = Math.cos(THREE.Math.degToRad(1)));
 
-    let sortFunction = function ( a, b ) { return a - b; };
+    let sortFunction = function(a, b) {
+        return a - b;
+    };
 
-    if ( mesh.geometry instanceof THREE.BufferGeometry ) {
+    if (mesh.geometry instanceof THREE.BufferGeometry) {
         geometry2 = new THREE.Geometry();
-        geometry2.fromBufferGeometry( mesh.geometry );
+        geometry2.fromBufferGeometry(mesh.geometry);
     } else {
         geometry2 = mesh.geometry.clone();
     }
@@ -321,39 +291,36 @@ export function getEdges(mesh)
         facesOriginal = mesh.geometry.faces,
         key;
 
-    for ( let i = 0, l = faces.length; i < l; i ++ ) {
+    for (let i = 0, l = faces.length; i < l; i++) {
+        let face = faces[i];
 
-        let face = faces[ i ];
-
-        for ( let j = 0; j < 3; j ++ ) {
-
-            edge[ 0 ] = face[ keys[ j ] ];
-            edge[ 1 ] = face[ keys[ ( j + 1 ) % 3 ] ];
-            edge.sort( sortFunction );
+        for (let j = 0; j < 3; j++) {
+            edge[0] = face[keys[j]];
+            edge[1] = face[keys[(j + 1) % 3]];
+            edge.sort(sortFunction);
 
             key = edge.toString();
 
-            if ( hash[ key ] === undefined ) {
-                hash[ key ] = { vert1: edge[ 0 ], vert2: edge[ 1 ], face1: i, face2: undefined };
+            if (hash[key] === undefined) {
+                hash[key] = { vert1: edge[0], vert2: edge[1], face1: i, face2: undefined };
             } else {
-                hash[ key ].face2 = i;
+                hash[key].face2 = i;
             }
         }
     }
 
     let edges = [];
 
-    for ( key in hash ) {
-        let h = hash[ key ];
-        if ( h.face2 === undefined || faces[ h.face1 ].normal.dot( faces[ h.face2 ].normal ) <= thresholdDot )
-        {
+    for (key in hash) {
+        let h = hash[key];
+        if (h.face2 === undefined || faces[h.face1].normal.dot(faces[h.face2].normal) <= thresholdDot) {
             edges.push({
-                vertex1:vertices[ h.vert1 ],
-                vertex2:vertices[ h.vert2 ],
+                vertex1: vertices[h.vert1],
+                vertex2: vertices[h.vert2],
                 // face1:faces[ h.face1 ],
                 // face2:faces[ h.face2 ],
-                face1:facesOriginal[ h.face1 ],
-                face2:facesOriginal[ h.face2 ],
+                face1: facesOriginal[h.face1],
+                face2: facesOriginal[h.face2],
                 faceIndex1: h.face1,
                 faceIndex2: h.face2
             });
@@ -363,24 +330,21 @@ export function getEdges(mesh)
     return edges;
 }
 
-export function addFragmentFogInjections(fragmentShader)
-{
+export function addFragmentFogInjections(fragmentShader) {
     let lines = fragmentShader.split('\n'),
         len = lines.length;
 
-    for(let i = 0; i < len; i++)
-    {
-        if(lines[i] === '/*#FOG_INJECTION_1#*/'){
+    for (let i = 0; i < len; i++) {
+        if (lines[i] === '/*#FOG_INJECTION_1#*/') {
             lines[i] = THREE.ShaderChunk['fog_pars_fragment'];
-        }else if(lines[i] === '/*#FOG_INJECTION_2#*/'){
+        } else if (lines[i] === '/*#FOG_INJECTION_2#*/') {
             lines[i] = THREE.ShaderChunk['fog_fragment'];
         }
     }
     return lines.join('\n');
 }
 
-export function pointOnSphere(r, a1, a2)
-{
+export function pointOnSphere(r, a1, a2) {
     return {
         x: r * Math.cos(a1) * Math.sin(a2),
         y: r * Math.sin(a1) * Math.sin(a2),
@@ -388,100 +352,88 @@ export function pointOnSphere(r, a1, a2)
     };
 }
 
-export function getPointsOnSphere(n)
-{
+export function getPointsOnSphere(n) {
     let pts = [],
         pt;
 
-    for(let i = 0; i < n; i++)
-    {
+    for (let i = 0; i < n; i++) {
         pt = pointOnSphere(1, Math.random() * Math.PI * 2, Math.random() * Math.PI * 2);
-        pts.push(new THREE.Vector3( pt.x, pt.y, pt.z ));
+        pts.push(new THREE.Vector3(pt.x, pt.y, pt.z));
     }
 
     return pts;
 }
 
-export function getPointsWithinSphere(n, maxRadius)
-{
+export function getPointsWithinSphere(n, maxRadius) {
     let pts = [],
         pt;
 
-    for(let i = 0; i < n; i++)
-    {
+    for (let i = 0; i < n; i++) {
         pt = pointOnSphere(Math.random() * maxRadius, Math.random() * Math.PI * 2, Math.random() * Math.PI * 2);
-        pts.push(new THREE.Vector3( pt.x, pt.y, pt.z ));
+        pts.push(new THREE.Vector3(pt.x, pt.y, pt.z));
     }
 
     return pts;
 }
 
-export function getPointsOnSphereEvenly(n)
-{
+export function getPointsOnSphereEvenly(n) {
     let pts = [],
         inc = Math.PI * (3 - Math.sqrt(5)),
         off = 2.0 / n,
-        x, y, z, r,
+        x,
+        y,
+        z,
+        r,
         phi;
 
-    for (let k = 0; k < n; k++){
-        y = k * off - 1 + (off /2);
+    for (let k = 0; k < n; k++) {
+        y = k * off - 1 + off / 2;
         r = Math.sqrt(1 - y * y);
         phi = k * inc;
         x = Math.cos(phi) * r;
         z = Math.sin(phi) * r;
 
-        pts.push(new THREE.Vector3( x, y, z ));
+        pts.push(new THREE.Vector3(x, y, z));
     }
     return pts;
 }
 
-export function getRandomVector3(min, max)
-{
+export function getRandomVector3(min, max) {
     return new THREE.Vector3(randomRange(min, max), randomRange(min, max), randomRange(min, max));
 }
 
-export function addRandomVector3(vec, min, max)
-{
+export function addRandomVector3(vec, min, max) {
     return getRandomVector3(min, max).add(vec);
 }
 
-export function rotationInDegrees(rotation)
-{
+export function rotationInDegrees(rotation) {
     let degrees = 180 / Math.PI;
     return new THREE.Euler(rotation.x * degrees, rotation.y * degrees, rotation.z * degrees, rotation.order);
 }
 
-export function loadJSONGeometry(manifest, callback)
-{
+export function loadJSONGeometry(manifest, callback) {
     let loader = new THREE.JSONLoader(),
         len = manifest.length,
         loaded = 0,
         file,
         id,
-        geometriesById = {}
-        geometries = [];
+        geometriesById = {};
+    geometries = [];
 
-    let load = function()
-    {
-        file = (manifest[loaded].file !== undefined) ? manifest[loaded].file : manifest[loaded];
-        id = (manifest[loaded].id !== undefined) ? manifest[loaded].id : null;
-        loader.load(file, function(g){
-            if(id)
-            {
+    let load = function() {
+        file = manifest[loaded].file !== undefined ? manifest[loaded].file : manifest[loaded];
+        id = manifest[loaded].id !== undefined ? manifest[loaded].id : null;
+        loader.load(file, function(g) {
+            if (id) {
                 geometriesById[id] = g;
             }
-            geometries.push({geometry:g, id:id});
+            geometries.push({ geometry: g, id: id });
             loaded++;
-            if(loaded === len)
-            {
-                if(typeof callback === 'function')
-                {
+            if (loaded === len) {
+                if (typeof callback === 'function') {
                     callback(geometries, geometriesById);
                 }
-            }
-            else
-            {
+            } else {
                 load();
             }
         });
@@ -490,39 +442,31 @@ export function loadJSONGeometry(manifest, callback)
     load();
 }
 
-export function loadTextures(manifest, callback)
-{
+export function loadTextures(manifest, callback) {
     let len = manifest.length,
         loaded = 0,
         file,
         id,
-        texturesById = {}
-        textures = [],
-        loader = new THREE.TextureLoader();
+        texturesById = {};
+    (textures = []), (loader = new THREE.TextureLoader());
 
-    loader.crossOrigin = "";
+    loader.crossOrigin = '';
 
-    let load = function()
-    {
-        file = (manifest[loaded].file !== undefined) ? manifest[loaded].file : manifest[loaded];
-        id = (manifest[loaded].id !== undefined) ? manifest[loaded].id : null;
+    let load = function() {
+        file = manifest[loaded].file !== undefined ? manifest[loaded].file : manifest[loaded];
+        id = manifest[loaded].id !== undefined ? manifest[loaded].id : null;
 
-        loader.load(file, function(tex){
-            if(id)
-            {
+        loader.load(file, function(tex) {
+            if (id) {
                 texturesById[id] = tex;
             }
-            textures.push({texture:tex, id:id});
+            textures.push({ texture: tex, id: id });
             loaded++;
-            if(loaded === len)
-            {
-                if(typeof callback === 'function')
-                {
+            if (loaded === len) {
+                if (typeof callback === 'function') {
                     callback(textures, texturesById);
                 }
-            }
-            else
-            {
+            } else {
                 load();
             }
         });
@@ -531,58 +475,50 @@ export function loadTextures(manifest, callback)
     load();
 }
 
-export function setTextureWrapping(textures, wrapping)
-{
-    for(let i = 0; i < textures.length; i++)
-    {
+export function setTextureWrapping(textures, wrapping) {
+    for (let i = 0; i < textures.length; i++) {
         textures[i].wrapS = textures[i].wrapT = wrapping;
         textures[i].needsUpdate = true;
     }
 }
 
-export function setTextureMipmapping(textures, mipmapping)
-{
-    for(let i = 0; i < textures.length; i++)
-    {
+export function setTextureMipmapping(textures, mipmapping) {
+    for (let i = 0; i < textures.length; i++) {
         textures[i].generateMipmaps = mipmapping;
         textures[i].needsUpdate = true;
     }
 }
 
-export function setTextureFilters(textures, minFilter, magFilter)
-{
-    for(let i = 0; i < textures.length; i++)
-    {
-        if(minFilter)
-            textures[i].minFilter = minFilter;
+export function setTextureFilters(textures, minFilter, magFilter) {
+    for (let i = 0; i < textures.length; i++) {
+        if (minFilter) textures[i].minFilter = minFilter;
 
-        if(magFilter)
-            textures[i].magFilter = magFilter;
+        if (magFilter) textures[i].magFilter = magFilter;
 
         textures[i].needsUpdate = true;
     }
 }
 
-export function injectShaderCode(original, key, injection)
-{
-    if(Object.prototype.toString.call(injection) === '[object Array]')
-    {
+export function injectShaderCode(original, key, injection) {
+    if (Object.prototype.toString.call(injection) === '[object Array]') {
         let replacement = '';
-        for(let i = 0; i < injection.length; i++)
-        {
+        for (let i = 0; i < injection.length; i++) {
             replacement += injection[i] + '\n';
         }
 
         return original.replace(key, replacement);
-    }
-    else
-    {
+    } else {
         return original.replace(key, injection);
     }
 }
 
-export function logVector(vector)
-{
+export function disableWebglWarnings(renderer) {
+    renderer.context.getShaderInfoLog = function() {
+        return '';
+    };
+}
+
+export function logVector(vector) {
     console.log(vector.x, vector.y, vector.z);
 }
 
@@ -600,21 +536,21 @@ export function logProgramInfo(gl, program) {
     // Taken from the WebGl spec:
     // http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14
     let enums = {
-        0x8B50: 'FLOAT_VEC2',
-        0x8B51: 'FLOAT_VEC3',
-        0x8B52: 'FLOAT_VEC4',
-        0x8B53: 'INT_VEC2',
-        0x8B54: 'INT_VEC3',
-        0x8B55: 'INT_VEC4',
-        0x8B56: 'BOOL',
-        0x8B57: 'BOOL_VEC2',
-        0x8B58: 'BOOL_VEC3',
-        0x8B59: 'BOOL_VEC4',
-        0x8B5A: 'FLOAT_MAT2',
-        0x8B5B: 'FLOAT_MAT3',
-        0x8B5C: 'FLOAT_MAT4',
-        0x8B5E: 'SAMPLER_2D',
-        0x8B60: 'SAMPLER_CUBE',
+        0x8b50: 'FLOAT_VEC2',
+        0x8b51: 'FLOAT_VEC3',
+        0x8b52: 'FLOAT_VEC4',
+        0x8b53: 'INT_VEC2',
+        0x8b54: 'INT_VEC3',
+        0x8b55: 'INT_VEC4',
+        0x8b56: 'BOOL',
+        0x8b57: 'BOOL_VEC2',
+        0x8b58: 'BOOL_VEC3',
+        0x8b59: 'BOOL_VEC4',
+        0x8b5a: 'FLOAT_MAT2',
+        0x8b5b: 'FLOAT_MAT3',
+        0x8b5c: 'FLOAT_MAT4',
+        0x8b5e: 'SAMPLER_2D',
+        0x8b60: 'SAMPLER_CUBE',
         0x1400: 'BYTE',
         0x1401: 'UNSIGNED_BYTE',
         0x1402: 'SHORT',
@@ -625,7 +561,7 @@ export function logProgramInfo(gl, program) {
     };
 
     // Loop through active uniforms
-    for (let i=0; i < activeUniforms; i++) {
+    for (let i = 0; i < activeUniforms; i++) {
         let uniform = gl.getActiveUniform(program, i);
         uniform.typeName = enums[uniform.type];
         result.uniforms.push(uniform);
@@ -633,7 +569,7 @@ export function logProgramInfo(gl, program) {
     }
 
     // Loop through active attributes
-    for (let i=0; i < activeAttributes; i++) {
+    for (let i = 0; i < activeAttributes; i++) {
         let attribute = gl.getActiveAttrib(program, i);
         attribute.typeName = enums[attribute.type];
         result.attributes.push(attribute);

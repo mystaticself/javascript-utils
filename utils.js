@@ -1,14 +1,14 @@
 'use strict';
 
-export function createElement(type, classNames, content){
+export function createElement(type, classNames, content) {
     type = type || 'div';
     let el = document.createElement(type);
-    if(classNames){
-        classNames.forEach(function(name){
+    if (classNames) {
+        classNames.forEach(function(name) {
             el.classList.add(name);
         });
     }
-    if(content) el.innerHTML = content;
+    if (content) el.innerHTML = content;
     return el;
 }
 
@@ -49,8 +49,7 @@ export function circlePointCollision(x, y, circle) {
 }
 
 export function pointInRect(x, y, rect) {
-    return inRange(x, rect.x, rect.x + rect.width) &&
-           inRange(y, rect.y, rect.y + rect.height);
+    return inRange(x, rect.x, rect.x + rect.width) && inRange(y, rect.y, rect.y + rect.height);
 }
 
 export function inRange(value, min, max) {
@@ -58,13 +57,11 @@ export function inRange(value, min, max) {
 }
 
 export function rangeIntersect(min0, max0, min1, max1) {
-    return Math.max(min0, max0) >= Math.min(min1, max1) &&
-           Math.min(min0, max0) <= Math.max(min1, max1);
+    return Math.max(min0, max0) >= Math.min(min1, max1) && Math.min(min0, max0) <= Math.max(min1, max1);
 }
 
 export function rectIntersect(r0, r1) {
-    return rangeIntersect(r0.x, r0.x + r0.width, r1.x, r1.x + r1.width) &&
-           rangeIntersect(r0.y, r0.y + r0.height, r1.y, r1.y + r1.height);
+    return rangeIntersect(r0.x, r0.x + r0.width, r1.x, r1.x + r1.width) && rangeIntersect(r0.y, r0.y + r0.height, r1.y, r1.y + r1.height);
 }
 
 export function degreesToRads(degrees) {
@@ -75,7 +72,7 @@ export function radsToDegrees(radians) {
     return radians * 180 / Math.PI;
 }
 
-export function angleBetweenPoints(p1, p2){
+export function angleBetweenPoints(p1, p2) {
     return Math.atan2(p2.y - p1.y, p2.x - p1.x);
 }
 
@@ -98,25 +95,15 @@ export function roundNearest(value, nearest) {
 
 export function quadraticBezier(p0, p1, p2, t, pFinal) {
     pFinal = pFinal || {};
-    pFinal.x = Math.pow(1 - t, 2) * p0.x +
-               (1 - t) * 2 * t * p1.x +
-               t * t * p2.x;
-    pFinal.y = Math.pow(1 - t, 2) * p0.y +
-               (1 - t) * 2 * t * p1.y +
-               t * t * p2.y;
+    pFinal.x = Math.pow(1 - t, 2) * p0.x + (1 - t) * 2 * t * p1.x + t * t * p2.x;
+    pFinal.y = Math.pow(1 - t, 2) * p0.y + (1 - t) * 2 * t * p1.y + t * t * p2.y;
     return pFinal;
 }
 
 export function cubicBezier(p0, p1, p2, p3, t, pFinal) {
     pFinal = pFinal || {};
-    pFinal.x = Math.pow(1 - t, 3) * p0.x +
-               Math.pow(1 - t, 2) * 3 * t * p1.x +
-               (1 - t) * 3 * t * t * p2.x +
-               t * t * t * p3.x;
-    pFinal.y = Math.pow(1 - t, 3) * p0.y +
-               Math.pow(1 - t, 2) * 3 * t * p1.y +
-               (1 - t) * 3 * t * t * p2.y +
-               t * t * t * p3.y;
+    pFinal.x = Math.pow(1 - t, 3) * p0.x + Math.pow(1 - t, 2) * 3 * t * p1.x + (1 - t) * 3 * t * t * p2.x + t * t * t * p3.x;
+    pFinal.y = Math.pow(1 - t, 3) * p0.y + Math.pow(1 - t, 2) * 3 * t * p1.y + (1 - t) * 3 * t * t * p2.y + t * t * t * p3.y;
     return pFinal;
 }
 
@@ -125,7 +112,7 @@ export function multicurve(points, context) {
 
     context.moveTo(points[0].x, points[0].y);
 
-    for(let i = 1; i < points.length - 2; i += 1) {
+    for (let i = 1; i < points.length - 2; i += 1) {
         p0 = points[i];
         p1 = points[i + 1];
         midx = (p0.x + p1.x) / 2;
@@ -146,43 +133,45 @@ export function pointOnSphere(r, a1, a2) {
     };
 }
 
-export function getPointsOnSphere(n){
+export function getPointsOnSphere(n) {
     let pts = [],
         pt;
 
-    for(let i = 0; i < n; i++)
-    {
+    for (let i = 0; i < n; i++) {
         pt = pointOnSphere(1, Math.random() * Math.PI * 2, Math.random() * Math.PI * 2);
-        pts.push({x:pt.x, y:pt.y, z:pt.z});
+        pts.push({ x: pt.x, y: pt.y, z: pt.z });
     }
 
     return pts;
 }
 
-export function getPointsOnSphereEvenly(n){
+export function getPointsOnSphereEvenly(n) {
     let pts = [],
         inc = Math.PI * (3 - Math.sqrt(5)),
         off = 2.0 / n,
-        x, y, z, r,
+        x,
+        y,
+        z,
+        r,
         phi;
 
-    for (let k = 0; k < n; k++){
-        y = k * off - 1 + (off /2);
+    for (let k = 0; k < n; k++) {
+        y = k * off - 1 + off / 2;
         r = Math.sqrt(1 - y * y);
         phi = k * inc;
         x = Math.cos(phi) * r;
         z = Math.sin(phi) * r;
 
-        pts.push({x:x, y:y, z:z});
+        pts.push({ x: x, y: y, z: z });
     }
     return pts;
 }
 
-export function clone(obj){
+export function clone(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
 
-export function isArray(arg){
+export function isArray(arg) {
     return Object.prototype.toString.call(arg) === '[object Array]';
 }
 
@@ -191,8 +180,7 @@ export function shuffleArray(array) {
         temporaryValue,
         randomIndex;
 
-    while (0 !== currentIndex)
-    {
+    while (0 !== currentIndex) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
         temporaryValue = array[currentIndex];
@@ -203,82 +191,86 @@ export function shuffleArray(array) {
     return array;
 }
 
-export function thinOutArray(array, n){
+export function thinOutArray(array, n) {
     let newArray = [],
         len = array.length;
 
-    for(let i = 0; i < len; i += n)
-    {
+    for (let i = 0; i < len; i += n) {
         newArray.push(array[i]);
     }
 
     return newArray;
 }
 
-export function randomItemFromArray(array){
-    return array[Math.random() * array.length | 0];
+export function randomItemFromArray(array) {
+    return array[(Math.random() * array.length) | 0];
 }
 
-export function arrayRestrictedToRangeZ(array, minZ, maxZ){
+export function arrayRestrictedToRangeZ(array, minZ, maxZ) {
     let newArray = [],
         len = array.length;
 
-    for(let i = 0; i < len; i++)
-    {
-        if(inRange(array[i].z, minZ, maxZ))
-            newArray.push(array[i]);
+    for (let i = 0; i < len; i++) {
+        if (inRange(array[i].z, minZ, maxZ)) newArray.push(array[i]);
     }
 
     return newArray;
 }
 
-export function extractKeyFromArray(array, key)
-{
+export function extractKeyFromArray(array, key) {
     let a = [];
-    for(let i = 0; i < array.length; i++)
-    {
+    for (let i = 0; i < array.length; i++) {
         a.push(array[i][key]);
     }
     return a;
 }
 
-export function repeat(callback, params, intervals, delay, startDelay){
+export function contains(source, tests) {
+    for (let i = 0; i < tests.length; i++) {
+        if (source.indexOf(tests[i]) > -1) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+export function repeat(callback, params, intervals, delay, startDelay) {
     startDelay = startDelay || 0;
     let i = 0;
-    let doStuff = function(){
-        setTimeout(function(){
+    let doStuff = function() {
+        setTimeout(function() {
             callback(params);
             i++;
-            if(i < intervals)
-                doStuff();
+            if (i < intervals) doStuff();
         }, delay);
     };
-    setTimeout(function(){
+    setTimeout(function() {
         doStuff();
     }, startDelay);
 }
 
-export function isOpera(){
+export function isOpera() {
     // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
     return !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
 }
 
-export function isFirefox(){
+export function isFirefox() {
     // Firefox 1.0+
     return typeof InstallTrigger !== 'undefined';
 }
 
-export function isSafari(){
+export function isSafari() {
     // At least Safari 3+: '[object HTMLElementConstructor]'
     return Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
 }
 
-export function isChrome(){
+export function isChrome() {
     // Chrome 1+
     return !!window.chrome && !isOpera();
 }
 
-export function isIE(){
+export function isIE() {
     // At least IE6
     return false || !!document.documentMode;
 }
@@ -291,20 +283,20 @@ export function isWindows() {
     return navigator.platform.toLowerCase().indexOf('win') > -1;
 }
 
-export function hasWebGL(){
+export function hasWebGL() {
     if (!!window.WebGLRenderingContext) {
         let canvas = document.createElement('canvas'),
             names = ['webgl', 'experimental-webgl', 'moz-webgl', 'webkit-3d'],
             context = false;
 
-        for(let i=0;i<4;i++) {
+        for (let i = 0; i < 4; i++) {
             try {
                 context = canvas.getContext(names[i]);
                 if (context && typeof context.getParameter === 'function') {
                     // WebGL is enabled
                     return true;
                 }
-            } catch(e) {}
+            } catch (e) {}
         }
         // WebGL is supported, but disabled
         return false;
@@ -313,51 +305,72 @@ export function hasWebGL(){
     return false;
 }
 
-export function getVideoType(file)
-{
-    if(file.indexOf('.mp4') !== -1)
-        return 'video/mp4';
-    else if(file.indexOf('.webm') !== -1)
-        return 'video/webm';
-    else if(file.indexOf('.ogg') !== -1)
-        return 'video/ogg';
+export function getVideoType(file) {
+    if (file.indexOf('.mp4') !== -1) return 'video/mp4';
+    else if (file.indexOf('.webm') !== -1) return 'video/webm';
+    else if (file.indexOf('.ogg') !== -1) return 'video/ogg';
 }
 
-export function dispatchEvent(eventName, config)
-{
+export function dispatchEvent(eventName, config) {
     config = config || null;
 
     let event;
 
-    if(!isIE())
-    {
+    if (!isIE()) {
         event = new CustomEvent(eventName, {
             detail: config
         });
         document.dispatchEvent(event);
-    }
-    else
-    {
+    } else {
         event = document.createEvent('CustomEvent');
         event.initCustomEvent(eventName, true, false, config);
         document.dispatchEvent(event);
     }
 }
 
-export function setCursor(cursor, element)
-{
+export function setCursor(cursor, element) {
     element = element || document.body;
 
-    if(element.style.cursor !== cursor)
-    {
+    if (element.style.cursor !== cursor) {
         element.style.cursor = cursor;
     }
 }
 
-export function getParameterByName(name)
-{
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    let regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+export function getParameterByName(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    let regex = new RegExp('[\\?&]' + name + '=([^&#]*)'),
         results = regex.exec(location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+export function createButton(config) {
+    const { label, left, right, top, bottom, width, height, clickHandler, bgColor = '#fff', fontColor = '#000', fontSize = '13px', font = 'sans-serif' } = config;
+
+    var button = document.createElement('button');
+    button.style.position = 'absolute';
+    if (left !== undefined) button.style.left = left;
+    if (right !== undefined) button.style.right = right;
+    if (top !== undefined) button.style.top = top;
+    if (bottom !== undefined) button.style.bottom = bottom;
+    button.style.width = width;
+    button.style.height = height;
+    button.style.border = '0';
+    button.style.padding = '8px';
+    button.style.cursor = 'pointer';
+    button.style.backgroundColor = bgColor;
+    button.style.color = fontColor;
+    button.style.fontFamily = font;
+    button.style.fontSize = fontSize;
+    button.style.fontStyle = 'normal';
+    button.style.textAlign = 'center';
+    button.style.zIndex = '999';
+    button.textContent = label;
+
+    button.onclick = () => {
+        clickHandler(button);
+    };
+
+    document.body.appendChild(button);
+
+    return button;
 }
